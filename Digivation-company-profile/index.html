@@ -8,33 +8,74 @@
     <title>Digivation (Pty) Ltd - Company Profile</title>
 
     <!-- Preload self-hosted fonts for print reliability -->
-    <link rel="preload" as="font" type="font/woff2" href="./assets/fonts/poppins-400.woff2" crossorigin>
-    <link rel="preload" as="font" type="font/woff2" href="./assets/fonts/montserrat-600.woff2" crossorigin>
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="./assets/fonts/poppins-400.woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      href="./assets/fonts/montserrat-600.woff2"
+      crossorigin
+    />
 
     <!-- Default to A4; JS swaps to Letter if needed -->
-    <link id="printProfile" rel="stylesheet" href="./print-a4.css" media="print">
+    <link
+      id="printProfile"
+      rel="stylesheet"
+      href="./print-a4.css"
+      media="print"
+    />
 
     <script>
       (function () {
         const params = new URLSearchParams(location.search);
-        let paper = (params.get('paper') || '').toLowerCase();
+        let paper = (params.get("paper") || "").toLowerCase();
 
         if (!paper) {
           paper = (function detectPaperSize() {
-            const LETTER_REGIONS = new Set(['US','CA','MX','PH','CO','VE','CL','GT','CR','DO','PA','PR','SV','NI','HN']);
-            const candidates = [navigator.language, ...(navigator.languages||[]), (Intl.DateTimeFormat().resolvedOptions().locale||'')].filter(Boolean);
+            const LETTER_REGIONS = new Set([
+              "US",
+              "CA",
+              "MX",
+              "PH",
+              "CO",
+              "VE",
+              "CL",
+              "GT",
+              "CR",
+              "DO",
+              "PA",
+              "PR",
+              "SV",
+              "NI",
+              "HN",
+            ]);
+            const candidates = [
+              navigator.language,
+              ...(navigator.languages || []),
+              Intl.DateTimeFormat().resolvedOptions().locale || "",
+            ].filter(Boolean);
             for (const loc of candidates) {
-              try { const reg = new Intl.Locale(loc).region?.toUpperCase(); if (reg && LETTER_REGIONS.has(reg)) return 'letter'; } catch {}
+              try {
+                const reg = new Intl.Locale(loc).region?.toUpperCase();
+                if (reg && LETTER_REGIONS.has(reg)) return "letter";
+              } catch {}
             }
-            const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
-            if (/^America\//.test(tz)) return 'letter';
-            return 'a4';
+            const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+            if (/^America\//.test(tz)) return "letter";
+            return "a4";
           })();
         }
 
-        document.documentElement.setAttribute('data-paper', paper);
-        const link = document.getElementById('printProfile');
-        link.href = paper === 'letter' ? './print-letter.css' : './print-a4.css';
+        document.documentElement.setAttribute("data-paper", paper);
+        const link = document.getElementById("printProfile");
+        link.href =
+          paper === "letter" ? "./print-letter.css" : "./print-a4.css";
       })();
     </script>
 
@@ -42,12 +83,48 @@
       @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@300;400;600;700&display=swap");
 
       /* Local font faces (print-safe) */
-      @font-face{font-family:"Poppins";src:url("./assets/fonts/poppins-300.woff2") format("woff2");font-weight:300;font-style:normal;font-display:swap}
-      @font-face{font-family:"Poppins";src:url("./assets/fonts/poppins-400.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
-      @font-face{font-family:"Poppins";src:url("./assets/fonts/poppins-500.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap}
-      @font-face{font-family:"Poppins";src:url("./assets/fonts/poppins-600.woff2") format("woff2");font-weight:600;font-style:normal;font-display:swap}
-      @font-face{font-family:"Montserrat";src:url("./assets/fonts/montserrat-600.woff2") format("woff2");font-weight:600;font-style:normal;font-display:swap}
-      @font-face{font-family:"Montserrat";src:url("./assets/fonts/montserrat-700.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}
+      @font-face {
+        font-family: "Poppins";
+        src: url("./assets/fonts/poppins-300.woff2") format("woff2");
+        font-weight: 300;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Poppins";
+        src: url("./assets/fonts/poppins-400.woff2") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Poppins";
+        src: url("./assets/fonts/poppins-500.woff2") format("woff2");
+        font-weight: 500;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Poppins";
+        src: url("./assets/fonts/poppins-600.woff2") format("woff2");
+        font-weight: 600;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Montserrat";
+        src: url("./assets/fonts/montserrat-600.woff2") format("woff2");
+        font-weight: 600;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Montserrat";
+        src: url("./assets/fonts/montserrat-700.woff2") format("woff2");
+        font-weight: 700;
+        font-style: normal;
+        font-display: swap;
+      }
 
       /* Digivation Brand Variables */
       :root {
@@ -1136,16 +1213,6 @@
               infrastructure needs while contributing to your transformation
               objectives.
             </p>
-            <a href="mailto:info@digivation.global" class="btn btn-primary"
-              >Get in Touch</a
-            >
-            <button
-              onclick="downloadPDF()"
-              class="btn btn-secondary"
-              style="margin-left: 1rem"
-            >
-              📄 Download PDF
-            </button>
           </div>
         </div>
       </div>
@@ -1263,16 +1330,23 @@
       });
 
       // PDF Download functionality - Stabilized print trigger
-      async function downloadPDF(){
+      async function downloadPDF() {
         document.body.classList.add("pdf-mode");
-        try{
+        try {
           if (document.fonts?.ready) await document.fonts.ready;
-          await new Promise(r => setTimeout(r, 150));
+          await new Promise((r) => setTimeout(r, 150));
           window.print();
         } finally {
-          const mql = window.matchMedia('print');
+          const mql = window.matchMedia("print");
           const cleanup = () => document.body.classList.remove("pdf-mode");
-          if (mql.addEventListener) mql.addEventListener('change', e => { if(!e.matches) cleanup(); }, {once:true});
+          if (mql.addEventListener)
+            mql.addEventListener(
+              "change",
+              (e) => {
+                if (!e.matches) cleanup();
+              },
+              { once: true }
+            );
           else setTimeout(cleanup, 800);
         }
       }
