@@ -547,7 +547,11 @@
         .cover {
           min-height: auto;
           padding: 2rem;
-          background: linear-gradient(135deg, #0F2230 0%, #2EC9CF 100%) !important;
+          background: linear-gradient(
+            135deg,
+            #0f2230 0%,
+            #2ec9cf 100%
+          ) !important;
           color: white !important;
           page-break-after: always;
         }
@@ -564,7 +568,7 @@
         }
 
         .section-title {
-          color: #8CAF27 !important;
+          color: #8caf27 !important;
           font-size: 18pt;
           margin-bottom: 0.5rem;
         }
@@ -576,20 +580,21 @@
 
         .highlight-box {
           background: #f8f9fa !important;
-          border: 1px solid #8CAF27 !important;
-          border-left: 4px solid #8CAF27 !important;
+          border: 1px solid #8caf27 !important;
+          border-left: 4px solid #8caf27 !important;
           padding: 1rem;
           margin: 1rem 0;
         }
 
-        .service-card, .contact-item {
+        .service-card,
+        .contact-item {
           border: 1px solid #ddd !important;
           box-shadow: none !important;
           margin-bottom: 0.5rem;
         }
 
         .contact-item a {
-          color: #8CAF27 !important;
+          color: #8caf27 !important;
           text-decoration: underline;
         }
 
@@ -608,22 +613,23 @@
         }
 
         .footer {
-          background: #0F2230 !important;
+          background: #0f2230 !important;
           color: white !important;
           padding: 1rem;
           margin-top: 2rem;
         }
 
         .footer-bbbee {
-          background: #8CAF27 !important;
-          color: #0F2230 !important;
+          background: #8caf27 !important;
+          color: #0f2230 !important;
           padding: 0.5rem 1rem;
           border-radius: 4px;
           display: inline-block;
         }
 
         /* Hide interactive elements in print */
-        .btn, button {
+        .btn,
+        button {
           display: none !important;
         }
 
@@ -635,16 +641,17 @@
         .contact-item {
           margin-bottom: 1rem;
           padding: 0.75rem;
-          border: 1px solid #8CAF27 !important;
+          border: 1px solid #8caf27 !important;
         }
 
         .contact-details h4 {
-          color: #8CAF27 !important;
+          color: #8caf27 !important;
           font-size: 12pt;
           margin-bottom: 0.25rem;
         }
 
-        .contact-details p, .contact-address {
+        .contact-details p,
+        .contact-address {
           font-size: 10pt;
           margin: 0;
         }
@@ -661,7 +668,7 @@
           display: block;
           margin-top: 0.5rem;
           font-size: 10pt;
-          color: #8CAF27;
+          color: #8caf27;
           font-weight: bold;
         }
       }
@@ -1222,7 +1229,11 @@
             <a href="mailto:info@digivation.global" class="btn btn-primary"
               >Get in Touch</a
             >
-            <button onclick="downloadPDF()" class="btn btn-secondary" style="margin-left: 1rem;">
+            <button
+              onclick="downloadPDF()"
+              class="btn btn-secondary"
+              style="margin-left: 1rem"
+            >
               📄 Download PDF
             </button>
           </div>
@@ -1230,7 +1241,7 @@
       </div>
 
       <!-- PDF Contact Section (only visible in print) -->
-      <div class="pdf-contact-section" style="display: none;">
+      <div class="pdf-contact-section" style="display: none">
         <div class="section">
           <div class="section-header">
             <div class="section-icon">📞</div>
@@ -1255,7 +1266,9 @@
                 <div class="contact-details">
                   <h4>Email</h4>
                   <p class="contact-email">
-                    <a href="mailto:info@digivation.global">info@digivation.global</a>
+                    <a href="mailto:info@digivation.global"
+                      >info@digivation.global</a
+                    >
                   </p>
                 </div>
               </div>
@@ -1264,7 +1277,9 @@
                 <div class="contact-details">
                   <h4>Website</h4>
                   <p>
-                    <a href="https://digivation.global">www.digivation.global</a>
+                    <a href="https://digivation.global"
+                      >www.digivation.global</a
+                    >
                   </p>
                 </div>
               </div>
@@ -1273,16 +1288,27 @@
                 <div class="contact-details">
                   <h4>Business Hours</h4>
                   <p>
-                    Monday - Friday: 8:00 AM - 5:00 PM<br />24/7 Emergency Support
-                    Available
+                    Monday - Friday: 8:00 AM - 5:00 PM<br />24/7 Emergency
+                    Support Available
                   </p>
                 </div>
               </div>
             </div>
-            <div class="highlight-box" style="text-align: center; margin-top: 2rem;">
+            <div
+              class="highlight-box"
+              style="text-align: center; margin-top: 2rem"
+            >
               <h3>Ready to Partner with Us?</h3>
-              <p><strong>Email:</strong> <a href="mailto:info@digivation.global">info@digivation.global</a></p>
-              <p><strong>Website:</strong> <a href="https://digivation.global">www.digivation.global</a></p>
+              <p>
+                <strong>Email:</strong>
+                <a href="mailto:info@digivation.global"
+                  >info@digivation.global</a
+                >
+              </p>
+              <p>
+                <strong>Website:</strong>
+                <a href="https://digivation.global">www.digivation.global</a>
+              </p>
             </div>
           </div>
         </div>
@@ -1329,14 +1355,14 @@
       // PDF Download functionality
       function downloadPDF() {
         // Add print-specific class for PDF styling
-        document.body.classList.add('pdf-mode');
-        
+        document.body.classList.add("pdf-mode");
+
         // Wait for styles to apply, then trigger print
         setTimeout(() => {
           window.print();
           // Remove the class after printing
           setTimeout(() => {
-            document.body.classList.remove('pdf-mode');
+            document.body.classList.remove("pdf-mode");
           }, 1000);
         }, 100);
       }
