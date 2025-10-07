@@ -1,152 +1,63 @@
 /* --- Page setup --- */
-@page {
-  /* Default to A4; browsers will map to Letter if needed */
-  size: A4 portrait;
-  margin: 12mm;
-}
+@page { size: A4 portrait; margin: 12mm; }
 
-* {
-  -webkit-print-color-adjust: exact !important;
-  print-color-adjust: exact !important;
-}
+* { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
 
-/* Reset boxes to use full width and keep spacing consistent */
-html, body {
-  background: #ffffff !important;
-  color: #1f2c35;
-  height: auto !important;
-}
+html, body { background:#fff !important; color:#1f2c35; height:auto !important; }
 
-/* Container: remove shadow but keep full-width layout */
-.container {
-  max-width: none !important;
-  width: 100% !important;
-  margin: 0 !important;
-  box-shadow: none !important;
-}
+/* Container: full width, no drop shadow in print */
+.container { max-width:none !important; width:100% !important; margin:0 !important; box-shadow:none !important; }
 
-/* --- Visual parity for hero/sections --- */
-.cover {
-  /* Force the same overlay gradient in print */
-  background: linear-gradient(125deg, rgba(15,34,48,.86), rgba(46,201,207,.58)), 
-              var(--hero-img) center 42% / cover no-repeat !important;
-  color: #fff !important;
-  padding: 24mm 14mm !important;   /* translate the spacing to mm for print */
-  break-after: page;                /* exact page break after cover */
-}
+/* --- HERO parity (use real <img> to guarantee print) --- */
+.cover { position:relative; padding:24mm 14mm !important; break-after: page; }
+.cover::before, .cover::after { display:none !important; content:none !important; }
 
-/* Hide animated pseudo element in print to avoid artifacts */
-.cover::before,
-.cover::after {
-  display: none !important;
-  content: none !important;
+.hero-bg-print{
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; z-index:0; filter:none !important;
 }
-
-/* Section backgrounds: hard-code colors so print matches screen */
-.section.surface-tinted {
-  background: #e8f2ef !important; /* var(--surface-tint) */
+.overlay-print{
+  position:absolute; inset:0; z-index:1;
+  /* Replace color-mix with explicit rgba for print reliability */
+  background: linear-gradient(125deg, rgba(15,34,48,0.86), rgba(46,201,207,0.58));
 }
+.cover .cover-content{ position:relative; z-index:2; color:#fff !important; }
+.hero-brandmark{ max-width:200px !important; filter:none !important; }
 
-.section:nth-child(even) {
-  background: #f4f4f4 !important; /* var(--surface-alt) */
-}
+/* --- Section parity --- */
+.section.surface-tinted { background:#e8f2ef !important; }   /* var(--surface-tint) */
+.section:nth-child(even){ background:#f4f4f4 !important; }   /* var(--surface-alt) */
+.section-title{ color:#8caf27 !important; font-family:var(--font-heading); }
 
-/* Typography parity */
-.section-title {
-  color: #8caf27 !important;       /* var(--brand-lime) */
-  font-family: var(--font-heading);
-}
-
-/* Cards and stats: preserve separators and avoid splitting */
-.service-card,
-.contact-item,
-.client-item,
-.stat-box,
-.highlight-box,
+/* --- Prevent splits --- */
+.section,
 .section-header,
-.section-content {
-  break-inside: avoid !important; /* prevent mid-card splits */
-  page-break-inside: avoid !important;
-  -webkit-column-break-inside: avoid !important;
-  box-shadow: none !important; /* shadows print poorly; drop them */
-  border: 1px solid rgba(15,34,48,0.08) !important;
-}
-
-/* Grids should try to keep rows together */
-.services-grid,
-.clients-grid,
-.contact-grid,
-.stats-container {
+.section-content,
+.highlight-box,
+.services-grid, .clients-grid, .contact-grid, .stats-container,
+.service-card, .client-item, .contact-item, .stat-box {
   break-inside: avoid !important;
   page-break-inside: avoid !important;
+  -webkit-column-break-inside: avoid !important;
 }
 
-/* Buttons: hide except explicit email CTA text, since they're interactive */
-.btn, button {
-  display: none !important;
+/* Cards: print-friendly borders (shadows rasterize poorly) */
+.service-card, .contact-item, .client-item, .stat-box, .highlight-box {
+  box-shadow:none !important;
+  border:1px solid rgba(15,34,48,0.10) !important;
 }
+
+/* Images vector/sharp and not upscaled */
+img, svg { max-width:100%; height:auto; image-rendering:optimizeQuality; }
+
+/* Interactive UI hidden */
+.btn, button { display:none !important; }
 
 /* Footer parity */
-.footer {
-  background: #0f2230 !important;
-  color: #fff !important;
-}
+.footer { background:#0f2230 !important; color:#fff !important; }
 
-/* Logos/images: keep crisp, avoid upscaling blur */
-img, svg {
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
-}
+/* Kill any automatic PDF-mode pseudo content */
+.pdf-mode .contact-item::after { content:none !important; display:none !important; }
 
-/* Remove the noisy "Click to email" pseudo-content added in JS/CSS */
-.pdf-mode .contact-item::after {
-  content: none !important;
-  display: none !important;
-}
-
-/* Print-ready class for enhanced rendering */
-.print-ready {
-  font-smooth: always;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Ensure contact information is prominent in print */
-.contact-item {
-  border: 1px solid #8caf27 !important;
-  background: #f8f9fa !important;
-}
-
-.contact-details h4 {
-  color: #8caf27 !important;
-  font-weight: 600;
-}
-
-.contact-details a {
-  color: #8caf27 !important;
-  text-decoration: underline;
-}
-
-/* B-BBEE section styling for print */
-.bbee-badge {
-  text-align: center;
-  margin: 1rem 0;
-}
-
-.bbee-logo {
-  max-width: 150px !important;
-  height: auto;
-}
-
-/* Ensure proper spacing for print */
-.section {
-  margin-bottom: 1.5rem;
-  padding: 1rem 0;
-}
-
-/* Hero logo sizing for print */
-.hero-brandmark {
-  max-width: 200px !important;
-  height: auto;
-  filter: none !important;
-}
+/* Orphans/widows to avoid single lines at page edges */
+p, li { orphans:3; widows:3; }

@@ -607,17 +607,10 @@
 
       /* Print Styles - Minimal overrides, main styles in print.css */
       @media print {
-        /* Remove duplicate "Click to email" artifacts */
+        /* Remove any conflicting styles - print.css governs print */
         .pdf-mode .contact-item::after {
           content: none !important;
           display: none !important;
-        }
-
-        /* Ensure print-ready class is applied */
-        .print-ready {
-          font-smooth: always;
-          -webkit-font-smoothing: antialiased;
-          -moz-osx-font-smoothing: grayscale;
         }
       }
 
@@ -716,6 +709,8 @@
     <div class="container">
       <!-- Cover Page -->
       <div class="cover">
+        <img class="hero-bg-print" src="./assets/images/hero@2x.jpg" alt="" aria-hidden="true">
+        <div class="overlay-print" aria-hidden="true"></div>
         <div class="cover-content">
           <h1 class="visually-hidden">Digivation</h1>
           <img
@@ -1300,27 +1295,20 @@
         });
       });
 
-      // PDF Download functionality - Enhanced print routine
-      async function downloadPDF() {
-        document.body.classList.add("pdf-mode", "print-ready");
-        try {
-          // Ensure fonts & images are ready
-          if (document.fonts && document.fonts.ready) {
-            await document.fonts.ready;
-          }
-          // Give layout a beat to settle
+      // PDF Download functionality - Stabilized print trigger
+      async function downloadPDF(){
+        document.body.classList.add("pdf-mode");
+        try{
+          if (document.fonts?.ready) await document.fonts.ready;
+          // wait a tick for layout to settle
           await new Promise(r => setTimeout(r, 150));
           window.print();
         } finally {
-          // Clean-up after print
+          // cleanup after print ends
           const mql = window.matchMedia('print');
-          const cleanup = () => document.body.classList.remove("print-ready");
-          if (mql.addEventListener) {
-            mql.addEventListener('change', e => { if (!e.matches) cleanup(); }, { once: true });
-          } else {
-            // Fallback
-            setTimeout(cleanup, 1000);
-          }
+          const cleanup = () => document.body.classList.remove("pdf-mode");
+          if (mql.addEventListener) mql.addEventListener('change', e => { if(!e.matches) cleanup(); }, {once:true});
+          else setTimeout(cleanup, 800);
         }
       }
     </script>
