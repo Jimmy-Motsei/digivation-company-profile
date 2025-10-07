@@ -8,84 +8,46 @@
     <title>Digivation (Pty) Ltd - Company Profile</title>
 
     <!-- Preload self-hosted fonts for print reliability -->
-    <link
-      rel="preload"
-      as="font"
-      type="font/woff2"
-      href="./assets/fonts/poppins-400.woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      as="font"
-      type="font/woff2"
-      href="./assets/fonts/montserrat-600.woff2"
-      crossorigin
-    />
+    <link rel="preload" as="font" type="font/woff2" href="./assets/fonts/poppins-400.woff2" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="./assets/fonts/montserrat-600.woff2" crossorigin>
 
-    <!-- Add dedicated print stylesheet -->
-    <link rel="stylesheet" href="./print.css" media="print" />
+    <!-- Default to A4; JS swaps to Letter if needed -->
+    <link id="printProfile" rel="stylesheet" href="./print-a4.css" media="print">
+
+    <script>
+      (function () {
+        const params = new URLSearchParams(location.search);
+        let paper = (params.get('paper') || '').toLowerCase();
+
+        if (!paper) {
+          paper = (function detectPaperSize() {
+            const LETTER_REGIONS = new Set(['US','CA','MX','PH','CO','VE','CL','GT','CR','DO','PA','PR','SV','NI','HN']);
+            const candidates = [navigator.language, ...(navigator.languages||[]), (Intl.DateTimeFormat().resolvedOptions().locale||'')].filter(Boolean);
+            for (const loc of candidates) {
+              try { const reg = new Intl.Locale(loc).region?.toUpperCase(); if (reg && LETTER_REGIONS.has(reg)) return 'letter'; } catch {}
+            }
+            const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+            if (/^America\//.test(tz)) return 'letter';
+            return 'a4';
+          })();
+        }
+
+        document.documentElement.setAttribute('data-paper', paper);
+        const link = document.getElementById('printProfile');
+        link.href = paper === 'letter' ? './print-letter.css' : './print-a4.css';
+      })();
+    </script>
 
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@300;400;600;700&display=swap");
 
       /* Local font faces (print-safe) */
-      @font-face {
-        font-family: "Poppins";
-        src: url("./assets/fonts/poppins-300.woff2") format("woff2");
-        font-weight: 300;
-        font-style: normal;
-        font-display: swap;
-      }
-      @font-face {
-        font-family: "Poppins";
-        src: url("./assets/fonts/poppins-400.woff2") format("woff2");
-        font-weight: 400;
-        font-style: normal;
-        font-display: swap;
-      }
-      @font-face {
-        font-family: "Poppins";
-        src: url("./assets/fonts/poppins-500.woff2") format("woff2");
-        font-weight: 500;
-        font-style: normal;
-        font-display: swap;
-      }
-      @font-face {
-        font-family: "Poppins";
-        src: url("./assets/fonts/poppins-600.woff2") format("woff2");
-        font-weight: 600;
-        font-style: normal;
-        font-display: swap;
-      }
-      @font-face {
-        font-family: "Poppins";
-        src: url("./assets/fonts/poppins-700.woff2") format("woff2");
-        font-weight: 700;
-        font-style: normal;
-        font-display: swap;
-      }
-      @font-face {
-        font-family: "Montserrat";
-        src: url("./assets/fonts/montserrat-300.woff2") format("woff2");
-        font-weight: 300;
-        font-style: normal;
-        font-display: swap;
-      }
-      @font-face {
-        font-family: "Montserrat";
-        src: url("./assets/fonts/montserrat-600.woff2") format("woff2");
-        font-weight: 600;
-        font-style: normal;
-        font-display: swap;
-      }
-      @font-face {
-        font-family: "Montserrat";
-        src: url("./assets/fonts/montserrat-700.woff2") format("woff2");
-        font-weight: 700;
-        font-style: normal;
-        font-display: swap;
-      }
+      @font-face{font-family:"Poppins";src:url("./assets/fonts/poppins-300.woff2") format("woff2");font-weight:300;font-style:normal;font-display:swap}
+      @font-face{font-family:"Poppins";src:url("./assets/fonts/poppins-400.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+      @font-face{font-family:"Poppins";src:url("./assets/fonts/poppins-500.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap}
+      @font-face{font-family:"Poppins";src:url("./assets/fonts/poppins-600.woff2") format("woff2");font-weight:600;font-style:normal;font-display:swap}
+      @font-face{font-family:"Montserrat";src:url("./assets/fonts/montserrat-600.woff2") format("woff2");font-weight:600;font-style:normal;font-display:swap}
+      @font-face{font-family:"Montserrat";src:url("./assets/fonts/montserrat-700.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}
 
       /* Digivation Brand Variables */
       :root {
@@ -709,7 +671,12 @@
     <div class="container">
       <!-- Cover Page -->
       <div class="cover">
-        <img class="hero-bg-print" src="./assets/images/hero@2x.jpg" alt="" aria-hidden="true">
+        <img
+          class="hero-bg-print"
+          src="./assets/images/hero@2x.jpg"
+          alt=""
+          aria-hidden="true"
+        />
         <div class="overlay-print" aria-hidden="true"></div>
         <div class="cover-content">
           <h1 class="visually-hidden">Digivation</h1>
@@ -1300,11 +1267,9 @@
         document.body.classList.add("pdf-mode");
         try{
           if (document.fonts?.ready) await document.fonts.ready;
-          // wait a tick for layout to settle
           await new Promise(r => setTimeout(r, 150));
           window.print();
         } finally {
-          // cleanup after print ends
           const mql = window.matchMedia('print');
           const cleanup = () => document.body.classList.remove("pdf-mode");
           if (mql.addEventListener) mql.addEventListener('change', e => { if(!e.matches) cleanup(); }, {once:true});
