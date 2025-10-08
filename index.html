@@ -1301,9 +1301,7 @@
               below and click send.
             </p>
             <form
-              action="mailto:info@digivation.global"
-              method="post"
-              enctype="text/plain"
+              id="profileForm"
               style="
                 margin-top: 1.5rem;
                 max-width: 500px;
@@ -1345,6 +1343,7 @@
               </div>
               <button
                 type="submit"
+                id="submitBtn"
                 class="btn btn-secondary"
                 style="
                   margin-top: 0.5rem;
@@ -1355,6 +1354,11 @@
               >
                 📄 Get Company Profile
               </button>
+
+              <div
+                id="formMessage"
+                style="margin-top: 1rem; text-align: center; display: none"
+              ></div>
             </form>
           </div>
         </div>
@@ -1498,6 +1502,57 @@
           else setTimeout(cleanup, 800);
         }
       }
+
+      // Form submission handler
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("profileForm");
+        const submitBtn = document.getElementById("submitBtn");
+        const messageDiv = document.getElementById("formMessage");
+
+        if (form) {
+          form.addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const email = form.email.value;
+            const message = form.message.value;
+
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Sending...";
+            messageDiv.style.display = "block";
+            messageDiv.innerHTML =
+              '<div style="color: #8caf27;">Sending your request...</div>';
+
+            try {
+              const response = await fetch("/.netlify/functions/send-profile", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email, message }),
+              });
+
+              const result = await response.json();
+
+              if (response.ok) {
+                messageDiv.innerHTML =
+                  '<div style="color: #8caf27; font-weight: bold;">✅ Company profile sent to your email!</div>';
+                form.reset();
+              } else {
+                messageDiv.innerHTML = `<div style="color: #d32f2f;">❌ ${
+                  result.error || "Failed to send. Please try again."
+                }</div>`;
+              }
+            } catch (error) {
+              messageDiv.innerHTML =
+                '<div style="color: #d32f2f;">❌ Network error. Please try again or contact us directly.</div>';
+            } finally {
+              submitBtn.disabled = false;
+              submitBtn.textContent = "📄 Get Company Profile";
+            }
+          });
+        }
+      });
     </script>
   </body>
 </html>

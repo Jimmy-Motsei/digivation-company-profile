@@ -1,0 +1,25 @@
+{
+  "name": "digivation-company-profile",
+  "version": "1.0.0",
+  "description": "Digivation Company Profile with email functionality",
+  "main": "index.html",
+  "scripts": {
+    "build": "echo 'No build step required'",
+    "dev": "netlify dev"
+  },
+  "dependencies": {
+    "nodemailer": "^6.9.7"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.0.0"
+  },
+  "keywords": [
+    "digivation",
+    "company-profile",
+    "telecommunications",
+    "iot",
+    "netlify"
+  ],
+  "author": "Digivation (Pty) Ltd",
+  "license": "MIT"
+}
